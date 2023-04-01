@@ -1,0 +1,4 @@
+list_a: [8, 7, 5, 6, 1, 2, 3]
+sorted_list: [1, 2, 3, 5, 6, 7, 8]
+seved cubed is 343
+binary of 257: 0b100000001
