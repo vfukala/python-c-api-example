@@ -1,4 +1,4 @@
-#include <python3.10/Python.h>
+#include <python3.12d/Python.h>
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -172,7 +172,10 @@ void print_pyobject(PyObject* obj)
 	}
 	PyObject *globals = PyDict_New();
 	PyDict_SetItemString(globals, "x", obj);
-	PyRun_String("print(x)", Py_eval_input, globals, PyDict_New());
+	PyObject *locals = PyDict_New();
+	PyRun_String("print(x)", Py_eval_input, globals, locals);
+	Py_DECREF(globals);
+	Py_DECREF(locals);
 }
 
 void test_binary_search(PyObject *list, PyObject *target)
@@ -244,9 +247,19 @@ int main(void)
 {
 	Py_Initialize();
 
-	test1();
-	test2();
-	test3();
+	// repeat many times here s.t. when we run this with PYTHONDUMPREFS=true, we can
+	// see if we have a memory leak (a very basic reasoning here is: we have a memory
+	// leak iff increasing the number of iterations here increases the length of the 
+	// refs dump)
+	// (have to compile CPython with ./configure --with-trace-refs to enable this)
+	for (unsigned i = 0; i < 1 /*300*/; i++)
+	{
+		test1();
+		test2();
+		test3();
+	}
+
+	Py_Finalize();
 
 	return EXIT_SUCCESS;
 }
