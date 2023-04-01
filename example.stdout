@@ -1,0 +1,64 @@
+BINARY SEARCH on
+[<NULL>, <NULL>, <NULL>]
+with target
+1
+
+>>>> C version
+the item at position 0 in the list is NULL!
+C version result:
+0
+
+>>>> Python version
+the item at position 0 in the list is NULL!
+python version result:
+(((can't print NULL as a PyObject)))
+
+
+
+BINARY SEARCH on
+[23, 'stray cat']
+with target
+23
+
+>>>> C version
+the item at position 1 in the list is not a long object (it's not an integer)!
+C version result:
+0
+
+>>>> Python version
+the item at position 1 in the list is not a long object (it's not an integer)!
+python version result:
+(((can't print NULL as a PyObject)))
+
+
+
+BINARY SEARCH on
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256]
+with target
+24
+
+>>>> C version
+C version result:
+0
+
+>>>> Python version
+python version result:
+False
+
+
+
+BINARY SEARCH on
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256]
+with target
+25
+
+>>>> C version
+C version result:
+1
+
+>>>> Python version
+python version result:
+True
+
+
+
