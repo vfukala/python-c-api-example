@@ -1,0 +1,61 @@
+field refcount: Int
+field payload: Rational // Rational here stands for any opaque type
+
+predicate is_valid_pyobject(o: Ref)
+
+function is_pylong(p: Rational): Bool
+function is_pydict(p: Rational): Bool
+
+function PyLong_Check(o: Ref): Bool
+	requires is_valid_pyobject(o)
+	requires acc(o.payload, 1/2)
+{
+	is_pylong(o.payload)
+}
+
+function PyDict_Check(o: Ref): Bool
+	requires is_valid_pyobject(o)
+	requires acc(o.payload)
+{
+	is_pydict(o.payload)
+}
+
+method PyLong_FromLong(v: Int) returns (o: Ref)
+	ensures o != null ==> is_valid_pyobject(o) && acc(o.refcount) && acc(o.payload) && PyLong_Check(o) && o.refcount == 1
+
+method PyLong_AsLong(o: Ref) returns (v: Int)
+	requires is_valid_pyobject(o) && acc(o.payload, 1/2) && PyLong_Check(o)
+
+method PyDict_New() returns (o: Ref)
+	ensures o != null ==> is_valid_pyobject(o) && acc(o.refcount) && acc(o.payload) && PyDict_Check(o) && o.refcount == 1
+
+method Py_INCREF(o: Ref)
+	requires is_valid_pyobject(o) && acc(o.refcount)
+	ensures is_valid_pyobject(o) && acc(o.refcount) && o.refcount == 1 + old(o.refcount)
+
+method Py_DECREF(o: Ref)
+	requires is_valid_pyobject(o) && acc(o.refcount)
+	ensures old(o.refcount) > 1 ==> is_valid_pyobject(o) && acc(o.refcount) && o.refcount + 1 == old(o.refcount)
+
+method client() {
+	var o: Ref
+	o := PyLong_FromLong(33)
+	// o := PyDict_New() // PyLong_Check(o) might not hold (line 46)
+	// assert PyLong_Check(o) // There might be insufficient permission to access is_valid_pyobject(o)
+	if (o != null) {
+		assert PyLong_Check(o)
+		Py_INCREF(o)
+		Py_DECREF(o)
+		// Py_DECREF(o) // makes line 51 fail
+		var i: Int
+		i := PyLong_AsLong(o)
+	}
+
+	// these specifications don't help against memory leaks:
+
+	var o2: Ref
+	o2 := PyLong_FromLong(3)
+	o2 := PyLong_FromLong(7)
+	o2 := PyLong_FromLong(97)
+	o2 := PyLong_FromLong(233)
+}
