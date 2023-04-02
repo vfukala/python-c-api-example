@@ -2,7 +2,6 @@ use std::ffi::CString;
 use std::io::{self, Write};
 
 #[repr(C)]
-#[derive(Clone, Copy)]
 struct PyObject {
     _private: [u8; 0]
 }
