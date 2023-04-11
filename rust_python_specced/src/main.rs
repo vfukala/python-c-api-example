@@ -72,6 +72,7 @@ impl PyObjectPointer {
     #[trusted]
     #[pure]
     fn is_held_by_api(&self) -> bool {
+        // should be an abstract function
         false
     }
 }
