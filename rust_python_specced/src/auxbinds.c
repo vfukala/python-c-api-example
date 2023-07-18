@@ -1,4 +1,4 @@
-#include <python3.12d/Python.h>
+#include <python3.11/Python.h>
 
 int MyLong_CheckExact(PyObject *obj) {
 	return PyLong_CheckExact(obj);

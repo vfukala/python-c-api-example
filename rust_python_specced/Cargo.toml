@@ -1,5 +1,5 @@
 [package]
-name = "rust_python_function_call"
+name = "rust_python_specced"
 version = "0.1.0"
 edition = "2021"
 build = "build.rs"
@@ -7,7 +7,7 @@ build = "build.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-prusti-contracts = { path = "../../../prusti-contracts/prusti-contracts" }
+prusti-contracts = { path = "../../../live/prusti-dev/prusti-contracts/prusti-contracts" }
 libc = "0.2"
 
 [build-dependencies]
