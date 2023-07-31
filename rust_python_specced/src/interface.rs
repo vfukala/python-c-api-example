@@ -84,7 +84,7 @@ enum GpyObjectData {
     PyBool(bool),
     PyDict,
     PyNotImplemented,
-    PyType(GpyType),
+    //PyType(GpyType),
 }
 
 impl GpyObjectData {
@@ -94,12 +94,23 @@ impl GpyObjectData {
     }
 }
 
-#[derive(Clone, Copy)]
-struct GpyType {
-    getattr: Option<dyn GpyGetattr>,
-    setattr: Option<dyn GpySetattr>,
+trait GpyType {
+    #[pure]
+    fn getattr(obj: PytObjectPointer, name: PytObjectPointer, s: &GpyGlobalState) -> (PytObjectPointer, GpyErrorState);
 }
 
+struct GpyLongType {}
+
+
+/*
+#[derive(Clone)]
+struct GpyType {
+    getattr: Option<fn(obj: PytObjectPointer, name: PytObjectPointer, s: &GpyGlobalState) -> (PytObjectPointer, GpyErrorState)>,
+    //setattr: Option<dyn GpySetattr>,
+}
+*/
+
+/*
 trait GpyGetattr {
     // returns the result and the updated error state
     #[pure]
@@ -111,6 +122,7 @@ trait GpySetattr {
     #[pure]
     fn setattr(obj: PytObjectPointer, name: PytObjectPointer, s: &GpyGlobalState) -> (GpyObjectData, GpyErrorState);
 }
+*/
 
 extern "C" {
     fn Py_Initialize();
@@ -374,6 +386,8 @@ pub unsafe fn pyt_is(obj0: PytObjectPointer, obj1: PytObjectPointer) -> bool {
     My_Is(obj0, obj1) != 0
 }
 
+/*
 pub unsafe fn pytobject_has_attr(obj0: PytObjectPointer, obj1: PytObjectPointer) -> bool {
 
 }
+*/

@@ -16,14 +16,14 @@ checksum = "99227334921fae1a979cf0bfdfcc6b3e5ce376ef57e16fb6fb3ea2ed6095f80c"
 
 [[package]]
 name = "prusti-contracts"
-version = "0.1.9"
+version = "0.1.10"
 dependencies = [
  "prusti-contracts-proc-macros",
 ]
 
 [[package]]
 name = "prusti-contracts-proc-macros"
-version = "0.1.9"
+version = "0.1.10"
 
 [[package]]
 name = "rust_python_specced"
